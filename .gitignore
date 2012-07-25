@@ -1,0 +1,7 @@
+/target
+.settings
+.cache
+/data
+/.classpath
+/.project
+/.groovy

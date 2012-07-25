@@ -1,0 +1,26 @@
+{
+    "entity": {
+        "properties": {
+            "name": {
+                "type": "string"
+            },
+            "code_system": {
+                "type": "string"
+            },
+            "descriptions": {
+                "properties": {
+                    "value": {
+                        "type": "string"
+                    }
+                }
+            },
+            "definitions": {
+                "properties": {
+                    "value": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}

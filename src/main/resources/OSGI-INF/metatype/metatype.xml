@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metatype:MetaData xmlns:metatype="http://www.osgi.org/xmlns/metatype/v1.0.0">
+	<OCD description="NLM UMLS Plugin" name="NLM UMLS Plugin" id="edu.mayo.cts2.framework.plugin.service.nlm">
+		<AD  name="JDBC URL" id="jdbcUrl" required="true" type="String" default="jdbc:mysql://bmidev3.mayo.edu:3307/umls"  />
+		<AD name="JDBC Driver Class" id="jdbcDriverClass" required="true" type="String" default="com.mysql.jdbc.Driver"  />
+		<AD name="JDBC User Name" id="username" required="true" type="String" default="lexgrid"  />
+		<AD name="JDBC Password" id="password" required="true" type="String" default="xxxxxx"  />
+		<AD name="c3p0  Idle Connection Test Period(seconds)" id="idleConnectionTestPeriod" required="true" type="String" default="3600"  />
+		<AD name="c3p0 Preferred Test Query" id="preferredTestQuery" required="true" type="String" default="SELECT 1;"  />
+
+	</OCD>
+	<Designate pid="edu.mayo.cts2.framework.plugin.service.nlm">
+        <Object ocdref="edu.mayo.cts2.framework.plugin.service.nlm"/>
+    </Designate>
+	
+</metatype:MetaData>

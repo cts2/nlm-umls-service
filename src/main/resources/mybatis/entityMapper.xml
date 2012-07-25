@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.mayo.cts2.framework.plugin.service.nlm.dao.EntityDao">
+
+<resultMap type="edu.mayo.cts2.framework.plugin.service.nlm.database.dao.EntityResult" id="getEntitiesResult">
+	
+</resultMap>
+
+	<select id="getEntities" 
+	fetchSize="-2147483648"
+	resultSetType="FORWARD_ONLY"
+	resultType="edu.mayo.cts2.framework.plugin.service.nlm.database.dao.EntityResult">
+		 SELECT mc.CODE as code, mc.SAB as sab, mc.STR as description, md.DEF as definition, mr.RANK as rank
+         FROM MRCONSO mc
+         LEFT JOIN MRRANK mr
+            ON (mc.SAB = mr.SAB and mc.TTY = mr.TTY)  
+         LEFT JOIN MRDEF md
+            ON mc.CUI = md.CUI AND mc.AUI = md.AUI AND mc.SAB = md.SAB
+
+	</select>
+
+</mapper>
