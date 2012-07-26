@@ -6,6 +6,8 @@ import edu.mayo.cts2.framework.plugin.service.nlm.database.dao.EntityResult
 import scala.collection.mutable.ListBuffer
 import org.springframework.stereotype.Component
 import org.elasticsearch.common.xcontent.XContentFactory._
+import edu.mayo.cts2.framework.plugin.service.nlm.index.dao.Indexable
+import edu.mayo.cts2.framework.plugin.service.nlm.index.dao.ElasticSearchIndexDao
 
 @Component
 class EntityIndexer {

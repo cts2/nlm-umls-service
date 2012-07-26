@@ -157,14 +157,14 @@
 			<artifactId>spring-jdbc</artifactId>
 			<version>3.1.0.RELEASE</version>
 		</dependency>
-		
-				<dependency>
+
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>3.1.0.RELEASE</version>
 		</dependency>
-		
-				<dependency>
+
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-expression</artifactId>
 			<version>3.1.0.RELEASE</version>
@@ -222,12 +222,12 @@
 			<version>2.6</version>
 		</dependency>
 
-<dependency>
-	<groupId>net.liftweb</groupId>
-	<artifactId>lift-json_2.8.1</artifactId>
-	<version>2.4</version>
-</dependency>
-            
+		<dependency>
+			<groupId>net.liftweb</groupId>
+			<artifactId>lift-json_2.8.1</artifactId>
+			<version>2.4</version>
+		</dependency>
+
 
 		<dependency>
 			<groupId>c3p0</groupId>
@@ -240,8 +240,8 @@
 			<artifactId>spring-elasticsearch</artifactId>
 			<version>0.0.2</version>
 		</dependency>
-		
-				<dependency>
+
+		<dependency>
 			<groupId>org.elasticsearch</groupId>
 			<artifactId>elasticsearch</artifactId>
 			<version>0.19.8</version>
@@ -291,6 +291,13 @@
 
 		<dependency>
 			<groupId>edu.mayo.cts2.framework</groupId>
+			<artifactId>plugin-util</artifactId>
+			<version>${develpment.framework.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>edu.mayo.cts2.framework</groupId>
 			<artifactId>core</artifactId>
 			<version>${develpment.framework.version}</version>
 			<type>test-jar</type>
@@ -298,10 +305,17 @@
 		</dependency>
 
 		<dependency>
-			<groupId>edu.mayo.cts2.framework</groupId>
-			<artifactId>plugin-util</artifactId>
-			<version>${develpment.framework.version}</version>
-			<scope>provided</scope>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
+			<version>2.2.8</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.dbunit</groupId>
+			<artifactId>dbunit</artifactId>
+			<version>2.4.8</version>
+			<scope>test</scope>
 		</dependency>
 
 	</dependencies>

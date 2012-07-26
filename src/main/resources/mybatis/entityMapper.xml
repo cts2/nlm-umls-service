@@ -9,8 +9,7 @@
 </resultMap>
 
 	<select id="getEntities" 
-	fetchSize="-2147483648"
-	resultSetType="FORWARD_ONLY"
+	
 	resultType="edu.mayo.cts2.framework.plugin.service.nlm.database.dao.EntityResult">
 		 SELECT mc.CODE as code, mc.SAB as sab, mc.STR as description, md.DEF as definition, mr.RANK as rank
          FROM MRCONSO mc

@@ -3,19 +3,25 @@ package edu.mayo.cts2.framework.plugin.service.nlm.profile.entity
 import static org.junit.Assert.*
 
 import javax.annotation.Resource
+import javax.sql.DataSource
 
+import org.dbunit.database.DatabaseConnection
+import org.dbunit.database.IDatabaseConnection
+import org.dbunit.dataset.IDataSet
+import org.dbunit.dataset.xml.FlatXmlDataSet
 import org.elasticsearch.client.Client
+import org.junit.Ignore
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.springframework.test.context.ContextConfiguration
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 
 import edu.mayo.cts2.framework.model.util.ModelUtils
 import edu.mayo.cts2.framework.plugin.service.nlm.test.AbstractTestBase
 import edu.mayo.cts2.framework.service.profile.entitydescription.name.EntityDescriptionReadId
 
 
-public class NlmEntityReadServiceTest extends Object {
-/*
-	@Resource
-	Client client
+public class NlmEntityReadServiceTest {
 	
 	@Test
 	void TestGetKey() {
@@ -30,13 +36,4 @@ public class NlmEntityReadServiceTest extends Object {
 		assertEquals "NCI:C12727", key
 	}
 	
-	@Test
-	void Test1() {
-		println client.getAdmin()
-	}
-	
-	@Test
-	void Test2() {
-		println client.getAdmin()
-	}*/
 }

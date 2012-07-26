@@ -1,22 +1,19 @@
 package edu.mayo.cts2.framework.plugin.service.nlm.profile.entity
 
 import static org.junit.Assert.*
-import java.io.StringWriter
 
 import javax.annotation.Resource
 import javax.xml.transform.stream.StreamResult
 
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.springframework.test.context.ContextConfiguration
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 
 import edu.mayo.cts2.framework.core.xml.DelegatingMarshaller
+import edu.mayo.cts2.framework.model.util.ModelUtils
+import edu.mayo.cts2.framework.plugin.service.nlm.test.AbstractTestBase
 import edu.mayo.cts2.framework.service.profile.entitydescription.name.EntityDescriptionReadId
 
-@RunWith(SpringJUnit4ClassRunner)
-@ContextConfiguration("/test-nlm-umls-context.xml")
-class NlmEntityReadServiceTestIT {
+
+class NlmEntityReadServiceTestIT extends AbstractTestBase {
 
 	@Resource
 	def NlmEntityReadService service
@@ -31,17 +28,26 @@ class NlmEntityReadServiceTestIT {
 	@Test
 	void TestRead() {
 		def id = new EntityDescriptionReadId(
-			ModelUtils.createScopedEntityName("C12727", "NCI"),
-			ModelUtils.nameOrUriFromName("NCI-Latest"))
+			ModelUtils.createScopedEntityName("001", "MCM"),
+			ModelUtils.nameOrUriFromName("MCM-Latest"))
 
 		assertNotNull service.read(id, null)
 	}
 	
 	@Test
+	void TestReadNotFound() {
+		def id = new EntityDescriptionReadId(
+			ModelUtils.createScopedEntityName("__INVALID__", "MCM"),
+			ModelUtils.nameOrUriFromName("MCM-Latest"))
+
+		assertNull service.read(id, null)
+	}
+	
+	@Test
 	void TestReadValidXml() {
 		def id = new EntityDescriptionReadId(
-			ModelUtils.createScopedEntityName("C12727", "NCI"),
-			ModelUtils.nameOrUriFromName("NCI-Latest"))
+			ModelUtils.createScopedEntityName("001", "MCM"),
+			ModelUtils.nameOrUriFromName("MCM-Latest"))
 
 		def ed = service.read(id, null)
 		assertNotNull ed
@@ -52,8 +58,8 @@ class NlmEntityReadServiceTestIT {
 	@Test
 	void TestReadHasDesignations() {
 		def id = new EntityDescriptionReadId(
-			ModelUtils.createScopedEntityName("C12727", "NCI"),
-			ModelUtils.nameOrUriFromName("NCI-Latest"))
+			ModelUtils.createScopedEntityName("001", "MCM"),
+			ModelUtils.nameOrUriFromName("MCM-Latest"))
 
 		def ed = service.read(id, null)
 		assertNotNull ed

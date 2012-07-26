@@ -19,7 +19,7 @@ import edu.mayo.cts2.framework.model.entity.NamedEntityDescription
 import edu.mayo.cts2.framework.model.service.core.DocumentedNamespaceReference
 import edu.mayo.cts2.framework.model.service.core.EntityNameOrURI
 import edu.mayo.cts2.framework.model.util.ModelUtils
-import edu.mayo.cts2.framework.plugin.service.nlm.index.ElasticSearchIndexDao
+import edu.mayo.cts2.framework.plugin.service.nlm.index.dao.ElasticSearchIndexDao
 import edu.mayo.cts2.framework.plugin.service.nlm.model.VersionedNameParser
 import edu.mayo.cts2.framework.plugin.service.nlm.profile.AbstractService
 import edu.mayo.cts2.framework.service.profile.entitydescription.name.EntityDescriptionReadId
@@ -50,7 +50,13 @@ class NlmEntityReadService extends AbstractService with EntityDescriptionReadSer
 
   def read(id: EntityDescriptionReadId, context: ResolvedReadContext = null): EntityDescription = {
 
-    indexDao.get("entity", getKey(id), entityFormatter)
+    val result = indexDao.get("entity", getKey(id), entityFormatter)
+    
+    if(result.isDefined){
+      result get
+    } else {
+      null
+    }
   }
 
   private def getKey(id: EntityDescriptionReadId): String = {

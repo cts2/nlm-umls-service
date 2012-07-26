@@ -14,17 +14,16 @@ import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescripti
 @ContextConfiguration("/test-nlm-umls-context.xml")
 class NlmServiceProviderTest {
 
-  @Resource
-  def NlmServiceProvider provider
+	@Resource
+	def NlmServiceProvider provider
 
-  @Test
-  void TestSetUp() {
-    assertNotNull provider
-  }
+	@Test
+	void TestSetUp() {
+		assertNotNull provider
+	}
 
-  @Test
-  void TestGetEntityRead() {
-    assertNotNull provider.getService(EntityDescriptionReadService.class)
-  }
-
+	@Test
+	void TestGetEntityRead() {
+		assertNotNull provider.getService(EntityDescriptionReadService.class)
+	}
 }
