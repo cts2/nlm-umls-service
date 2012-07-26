@@ -1,31 +1,42 @@
 package edu.mayo.cts2.framework.plugin.service.nlm.profile.entity
 
 import static org.junit.Assert.*
-import org.junit.runner.RunWith
-import org.junit.Test
-import org.scalatest.junit.AssertionsForJUnit
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
-import org.springframework.test.context.ContextConfiguration
 
-import edu.mayo.cts2.framework.service.profile.entitydescription.name.EntityDescriptionReadId
 import javax.annotation.Resource
 
-@RunWith(SpringJUnit4ClassRunner)
-@ContextConfiguration("/test-nlm-umls-context.xml")
-class NlmEntityReadServiceTest {
+import org.elasticsearch.client.Client
+import org.junit.Test
 
+import edu.mayo.cts2.framework.model.util.ModelUtils
+import edu.mayo.cts2.framework.plugin.service.nlm.test.AbstractTestBase
+import edu.mayo.cts2.framework.service.profile.entitydescription.name.EntityDescriptionReadId
+
+
+public class NlmEntityReadServiceTest extends Object {
+/*
 	@Resource
-	def NlmEntityReadService service
-
+	Client client
+	
 	@Test
-	void TestSetUp() {
-		assertNotNull service
+	void TestGetKey() {
+		def svc = new NlmEntityReadService()
+		
+		def id = new EntityDescriptionReadId(
+			ModelUtils.createScopedEntityName("C12727", "NCI"),
+			ModelUtils.nameOrUriFromName("NCI-Latest"))
+		
+		def key = svc.getKey(id)
+		
+		assertEquals "NCI:C12727", key
 	}
-
+	
 	@Test
-	void TestRead() {
-		def id = new EntityDescriptionReadId(null,null,null)
-
-		assertNotNull service.read(id, null)
+	void Test1() {
+		println client.getAdmin()
 	}
+	
+	@Test
+	void Test2() {
+		println client.getAdmin()
+	}*/
 }

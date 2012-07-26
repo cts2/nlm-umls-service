@@ -1,7 +1,5 @@
 package edu.mayo.cts2.framework.plugin.service.nlm.index.dao
 
-import static org.junit.Assert.*
-
 import javax.annotation.Resource
 
 import org.junit.Ignore

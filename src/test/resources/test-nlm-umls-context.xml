@@ -24,11 +24,9 @@
 	<bean id="configInitializer"
 		class="edu.mayo.cts2.framework.core.config.TestConfigInitializerSpringFactory" />
 
-<!-- 	<bean id="elasticsearchTransportClient" -->
-<!-- 		class="fr.pilato.spring.elasticsearch.ElasticsearchClientFactoryBean"> -->
-<!-- 	</bean> -->
-	
-<!-- 	<bean class="fr.pilato.spring.elasticsearch.ElasticsearchNodeFactoryBean"/> -->
+	<bean id="elasticsearchClient"
+		class="edu.mayo.cts2.framework.plugin.service.nlm.test.DelegatingClientFactory">
+	</bean>
 
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
 		<property name="driverClass" value="com.mysql.jdbc.Driver" />

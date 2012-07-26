@@ -12,7 +12,7 @@ trait VersionedNameParser extends NameParser {
 
 class VersionedName(name: String, version: String) {
 
-  def getName() { name }
-  def getVersion() { version }
+  def getName():String = { name }
+  def getVersion():String = { version }
 
 }

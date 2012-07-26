@@ -1,19 +1,9 @@
 package edu.mayo.cts2.framework.plugin.service.nlm.index.dao
-import org.junit.runner.RunWith
-import org.springframework.test.context.ContextConfiguration
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
-import edu.mayo.cts2.framework.plugin.service.nlm.index.ElasticSearchIndexDao
-import edu.mayo.cts2.framework.plugin.service.nlm.profile.entity.NlmEntityReadService
-import org.junit.Test
-import javax.annotation.Resource
-import static org.junit.Assert.*
-import org.elasticsearch.client.Client
-import org.junit.Before
-import org.elasticsearch.node.Node
-import static org.elasticsearch.node.NodeBuilder.*
-import org.junit.After
 import org.elasticsearch.client.transport.TransportClient
 import org.elasticsearch.common.transport.InetSocketTransportAddress
+import org.junit.After
+import org.junit.Before
+import org.junit.Test
 
 /*
 @RunWith(classOf[SpringJUnit4ClassRunner])

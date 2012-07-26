@@ -1,9 +1,8 @@
 package edu.mayo.cts2.framework.plugin.service.nlm.provider
 
-import static org.junit.Assert.*
-
 import javax.annotation.Resource
 
+import static org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.test.context.ContextConfiguration

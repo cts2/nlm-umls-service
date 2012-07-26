@@ -13,7 +13,7 @@
 
 	<bean class="edu.mayo.cts2.framework.util.spring.UrlConstructorSpringFactory" />
 
-	<bean id="elasticsearchTransportClient"
+	<bean id="elasticsearchClient"
 		class="fr.pilato.spring.elasticsearch.ElasticsearchTransportClientFactoryBean">
 		<property name="classpathRoot" value="es"/>
 		<property name="autoscan" value="false"/>
