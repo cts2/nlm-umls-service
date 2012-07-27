@@ -1,6 +1,7 @@
 package edu.mayo.cts2.framework.plugin.service.nlm.index
 
 import javax.annotation.Resource
+
 import edu.mayo.cts2.framework.plugin.service.nlm.database.dao.EntityDatabaseDao
 import edu.mayo.cts2.framework.plugin.service.nlm.database.dao.EntityResult
 import scala.collection.mutable.ListBuffer

@@ -2,12 +2,13 @@
  <!DOCTYPE configuration
  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-config.dtd">
- 
+
 <configuration>
 
-    <mappers>
-    	<mapper resource="mybatis/commonMapper.xml"/>
-        <mapper resource="mybatis/entityMapper.xml"/>
-    </mappers>
-    
+	<mappers>
+		<mapper resource="mybatis/commonMapper.xml" />
+		<mapper resource="mybatis/entityMapper.xml" />
+		<mapper resource="mybatis/umlsMapper.xml" />
+	</mappers>
+
 </configuration>
