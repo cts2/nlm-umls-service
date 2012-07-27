@@ -29,7 +29,7 @@ class NlmEntityReadServiceTestIT extends AbstractTestBase {
 	void TestRead() {
 		def id = new EntityDescriptionReadId(
 			ModelUtils.createScopedEntityName("001", "MCM"),
-			ModelUtils.nameOrUriFromName("MCM-Latest"))
+			ModelUtils.nameOrUriFromName("MCM92"))
 
 		assertNotNull service.read(id, null)
 	}
@@ -38,7 +38,7 @@ class NlmEntityReadServiceTestIT extends AbstractTestBase {
 	void TestReadNotFound() {
 		def id = new EntityDescriptionReadId(
 			ModelUtils.createScopedEntityName("__INVALID__", "MCM"),
-			ModelUtils.nameOrUriFromName("MCM-Latest"))
+			ModelUtils.nameOrUriFromName("MCM92"))
 
 		assertNull service.read(id, null)
 	}
@@ -47,7 +47,7 @@ class NlmEntityReadServiceTestIT extends AbstractTestBase {
 	void TestReadValidXml() {
 		def id = new EntityDescriptionReadId(
 			ModelUtils.createScopedEntityName("001", "MCM"),
-			ModelUtils.nameOrUriFromName("MCM-Latest"))
+			ModelUtils.nameOrUriFromName("MCM92"))
 
 		def ed = service.read(id, null)
 		assertNotNull ed
@@ -59,7 +59,7 @@ class NlmEntityReadServiceTestIT extends AbstractTestBase {
 	void TestReadHasDesignations() {
 		def id = new EntityDescriptionReadId(
 			ModelUtils.createScopedEntityName("001", "MCM"),
-			ModelUtils.nameOrUriFromName("MCM-Latest"))
+			ModelUtils.nameOrUriFromName("MCM92"))
 
 		def ed = service.read(id, null)
 		assertNotNull ed

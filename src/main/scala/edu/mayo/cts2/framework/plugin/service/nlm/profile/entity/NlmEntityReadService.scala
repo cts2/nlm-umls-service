@@ -1,40 +1,44 @@
 package edu.mayo.cts2.framework.plugin.service.nlm.profile.entity
 
-import scala.annotation.implicitNotFound
+import scala.Option.option2Iterable
+import scala.collection.JavaConversions.seqAsJavaList
+import scala.collection.JavaConverters.asScalaBufferConverter
+import scala.collection.JavaConverters.mapAsScalaMapConverter
 import org.elasticsearch.action.get.GetResponse
 import org.springframework.stereotype.Component
 import edu.mayo.cts2.framework.model.command.Page
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext
 import edu.mayo.cts2.framework.model.core.CodeSystemReference
 import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference
+import edu.mayo.cts2.framework.model.core.Definition
 import edu.mayo.cts2.framework.model.core.EntityReference
 import edu.mayo.cts2.framework.model.core.NameAndMeaningReference
 import edu.mayo.cts2.framework.model.core.SortCriteria
+import edu.mayo.cts2.framework.model.core.URIAndEntityName
 import edu.mayo.cts2.framework.model.core.VersionTagReference
 import edu.mayo.cts2.framework.model.directory.DirectoryResult
+import edu.mayo.cts2.framework.model.entity.Designation
 import edu.mayo.cts2.framework.model.entity.EntityDescription
 import edu.mayo.cts2.framework.model.entity.EntityList
 import edu.mayo.cts2.framework.model.entity.EntityListEntry
 import edu.mayo.cts2.framework.model.entity.NamedEntityDescription
-import edu.mayo.cts2.framework.model.service.core.DocumentedNamespaceReference
 import edu.mayo.cts2.framework.model.service.core.EntityNameOrURI
 import edu.mayo.cts2.framework.model.util.ModelUtils
 import edu.mayo.cts2.framework.plugin.service.nlm.index.dao.ElasticSearchIndexDao
-import edu.mayo.cts2.framework.plugin.service.nlm.model.VersionedNameParser
 import edu.mayo.cts2.framework.plugin.service.nlm.profile.AbstractService
 import edu.mayo.cts2.framework.service.profile.entitydescription.name.EntityDescriptionReadId
 import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescriptionReadService
 import javax.annotation.Resource
-import edu.mayo.cts2.framework.model.core.URIAndEntityName
-import edu.mayo.cts2.framework.model.entity.Designation
-import scala.collection.JavaConverters._
-import edu.mayo.cts2.framework.model.core.Definition
+import edu.mayo.cts2.framework.plugin.service.nlm.umls.UmlsService
 
 @Component
-class NlmEntityReadService extends AbstractService with EntityDescriptionReadService with VersionedNameParser {
+class NlmEntityReadService extends AbstractService with EntityDescriptionReadService {
 
   @Resource
   var indexDao: ElasticSearchIndexDao = _
+  
+  @Resource
+  var umlsService: UmlsService = _
 
   def readEntityDescriptions(p1: EntityNameOrURI, p2: SortCriteria, p3: ResolvedReadContext, p4: Page): DirectoryResult[EntityListEntry] = throw new RuntimeException()
 
@@ -46,13 +50,11 @@ class NlmEntityReadService extends AbstractService with EntityDescriptionReadSer
 
   def getKnownCodeSystemVersions: java.util.List[CodeSystemVersionReference] = throw new RuntimeException()
 
-  def getSupportedVersionTags: java.util.List[VersionTagReference] = throw new RuntimeException()
-
   def read(id: EntityDescriptionReadId, context: ResolvedReadContext = null): EntityDescription = {
 
     val result = indexDao.get("entity", getKey(id), entityFormatter)
-    
-    if(result.isDefined){
+
+    if (result.isDefined) {
       result get
     } else {
       null
@@ -61,9 +63,9 @@ class NlmEntityReadService extends AbstractService with EntityDescriptionReadSer
 
   private def getKey(id: EntityDescriptionReadId): String = {
 
-    val csvName = this.toVersionedName(id.getCodeSystemVersion().getName())
+    val csvName = this.umlsService.getRSab(id.getCodeSystemVersion().getName())
 
-    List(csvName.getName(), ":", id.getEntityName().getName()).reduceLeft(_ + _)
+    List(csvName, ":", id.getEntityName().getName()).reduceLeft(_ + _)
   }
 
   def entityFormatter = (getResponse: GetResponse) => {
@@ -113,6 +115,6 @@ class NlmEntityReadService extends AbstractService with EntityDescriptionReadSer
 
   def exists(p1: EntityDescriptionReadId, p2: ResolvedReadContext): Boolean = throw new RuntimeException()
 
-  def getKnownNamespaceList: java.util.List[DocumentedNamespaceReference] = throw new RuntimeException()
-
+  def getSupportedVersionTags: java.util.List[VersionTagReference] =
+    List[VersionTagReference](CURRENT_TAG)
 }
