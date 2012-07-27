@@ -26,9 +26,5 @@ class NlmServiceProviderTest {
 	void TestGetEntityRead() {
 		assertNotNull provider.getService(EntityDescriptionReadService.class)
 	}
-	
-	@Test 
-	void test(){
-		test.binomial(1,2)
-	}
+
 }
