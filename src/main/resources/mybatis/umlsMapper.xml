@@ -6,7 +6,11 @@
 
 	<select id="getSabs" 
 	resultType="edu.mayo.cts2.framework.plugin.service.nlm.umls.dao.SabResult">
-		 SELECT mrsab.RSAB as rsab, mrsab.VSAB as vsab
+		 SELECT 
+		 	mrsab.RSAB as rsab, 
+		 	mrsab.VSAB as vsab,
+		 	mrsab.RCUI as rcui, 
+		 	mrsab.VCUI as vcui
          FROM MRSAB mrsab
 	</select>
 

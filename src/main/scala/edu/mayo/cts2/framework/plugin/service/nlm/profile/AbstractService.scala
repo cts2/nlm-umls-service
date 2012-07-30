@@ -7,6 +7,11 @@ import edu.mayo.cts2.framework.model.service.core.DocumentedNamespaceReference
 import edu.mayo.cts2.framework.model.core.OpaqueData
 import edu.mayo.cts2.framework.model.core.VersionTagReference
 import scala.collection.JavaConversions._
+import edu.mayo.cts2.framework.model.core.CodeSystemVersionReference
+import edu.mayo.cts2.framework.plugin.service.nlm.umls.UmlsService
+import javax.annotation.Resource
+import edu.mayo.cts2.framework.model.core.NameAndMeaningReference
+import edu.mayo.cts2.framework.model.core.CodeSystemReference
 
 abstract class AbstractService extends BaseService {
 
@@ -15,6 +20,13 @@ abstract class AbstractService extends BaseService {
   val DESCRIPTION = "CTS2 Service Implementation using the NLM UMLS."
   val CURRENT_TAG = {
     new VersionTagReference("CURRENT")
+  }
+
+  @Resource
+  var umlsService: UmlsService = _
+  
+  def setUmlsService(service: UmlsService){
+    umlsService = service
   }
 
   override def getServiceVersion(): String = {
@@ -36,6 +48,26 @@ abstract class AbstractService extends BaseService {
     return this.getClass().getCanonicalName()
   }
 
+  def buildCodeSystemVersionReference(sab: String) = {
+    def ref = new CodeSystemVersionReference()
+    def versionRef = new NameAndMeaningReference()
+    def codeSystemRef = new CodeSystemReference()
+
+    val vsab = umlsService.getVSab(sab)
+    val csUri = umlsService.getUriFromRSab(sab)
+    val csvUri = umlsService.getUriFromVSab(vsab)
+
+    versionRef.setContent(vsab)
+    versionRef.setUri(csvUri)
+
+    codeSystemRef.setContent(sab)
+    codeSystemRef.setUri(csUri)
+
+    ref.setCodeSystem(codeSystemRef)
+    ref.setVersion(versionRef)
+
+    ref
+  }
 
   def getKnownNamespaceList: java.util.List[DocumentedNamespaceReference] = List[DocumentedNamespaceReference]()
 

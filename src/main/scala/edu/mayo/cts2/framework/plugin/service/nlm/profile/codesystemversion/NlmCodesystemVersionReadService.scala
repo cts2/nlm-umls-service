@@ -15,9 +15,6 @@ import javax.annotation.Resource
 @Component
 class NlmCodeSystemVersionService extends AbstractService with CodeSystemVersionReadService {
 
-  @Resource
-  var umlsService: UmlsService = _
-
   /**
    * This is incomplete... this is only here to map the 'CURRENT' tag to a CodeSystemVersionName.
    */

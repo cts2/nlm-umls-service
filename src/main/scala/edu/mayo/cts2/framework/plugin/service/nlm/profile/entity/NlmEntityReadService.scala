@@ -30,15 +30,17 @@ import edu.mayo.cts2.framework.service.profile.entitydescription.name.EntityDesc
 import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescriptionReadService
 import javax.annotation.Resource
 import edu.mayo.cts2.framework.plugin.service.nlm.umls.UmlsService
+import edu.mayo.cts2.framework.plugin.service.nlm.namespace.NamespaceResolutionService
 
 @Component
-class NlmEntityReadService extends AbstractService with EntityDescriptionReadService {
+class NlmEntityReadService extends AbstractService 
+	with EntityDescriptionReadService {
 
   @Resource
   var indexDao: ElasticSearchIndexDao = _
   
   @Resource
-  var umlsService: UmlsService = _
+  var namespaceResolutionService: NamespaceResolutionService = _
 
   def readEntityDescriptions(p1: EntityNameOrURI, p2: SortCriteria, p3: ResolvedReadContext, p4: Page): DirectoryResult[EntityListEntry] = throw new RuntimeException()
 
@@ -92,7 +94,7 @@ class NlmEntityReadService extends AbstractService with EntityDescriptionReadSer
 
     entity.setEntityID(ModelUtils.createScopedEntityName(code, sab))
 
-    entity.setAbout("http://test/org")
+    entity.setAbout(namespaceResolutionService.prefixToUri(sab) + code)
 
     val entityType = new URIAndEntityName()
     entityType.setName("Class")
@@ -101,11 +103,8 @@ class NlmEntityReadService extends AbstractService with EntityDescriptionReadSer
 
     entity.addEntityType(entityType)
 
-    val ref = new CodeSystemVersionReference()
-    ref.setCodeSystem(new CodeSystemReference(sab))
-    ref.setVersion(new NameAndMeaningReference(sab))
-
-    entity.setDescribingCodeSystemVersion(ref)
+    entity.setDescribingCodeSystemVersion(
+        buildCodeSystemVersionReference(sab))
 
     var entityDescription = new EntityDescription()
     entityDescription.setNamedEntity(entity)
