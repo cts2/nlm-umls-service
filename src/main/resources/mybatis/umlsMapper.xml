@@ -12,6 +12,8 @@
 		 	mrsab.RCUI as rcui, 
 		 	mrsab.VCUI as vcui
          FROM MRSAB mrsab
+         WHERE
+         	mrsab.CURVER = 'Y'
 	</select>
 
 </mapper>

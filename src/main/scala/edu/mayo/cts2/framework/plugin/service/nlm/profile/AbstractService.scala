@@ -49,9 +49,9 @@ abstract class AbstractService extends BaseService {
   }
 
   def buildCodeSystemVersionReference(sab: String) = {
-    def ref = new CodeSystemVersionReference()
-    def versionRef = new NameAndMeaningReference()
-    def codeSystemRef = new CodeSystemReference()
+    val ref = new CodeSystemVersionReference()
+    val versionRef = new NameAndMeaningReference()
+    val codeSystemRef = new CodeSystemReference()
 
     val vsab = umlsService.getVSab(sab)
     val csUri = umlsService.getUriFromRSab(sab)

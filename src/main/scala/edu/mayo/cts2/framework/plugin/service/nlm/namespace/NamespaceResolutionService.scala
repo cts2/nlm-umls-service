@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component
 import clojure.lang.RT
 import edu.mayo.cts2.framework.plugin.service.nlm.umls.UmlsService
 
-@Component("namespaceResolutionService")
+@Component
 class NamespaceResolutionService {
 
   RT.loadResourceScript("cts2/ns/NamespaceService.clj");
@@ -13,6 +13,7 @@ class NamespaceResolutionService {
   val getNsUriFn = RT.`var`("cts2.ns", "getNsUri")
   val getNsPrefixFn = RT.`var`("cts2.ns", "getNsPrefix")
 
+  @scala.reflect.BeanProperty
   @Value("${namespaceServiceUrl}")
   var namespaceServiceUrl: String = _
   

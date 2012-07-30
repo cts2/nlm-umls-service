@@ -15,8 +15,8 @@
 
 	<bean id="elasticsearchClient"
 		class="fr.pilato.spring.elasticsearch.ElasticsearchTransportClientFactoryBean">
-		<property name="classpathRoot" value="es"/>
-		<property name="autoscan" value="false"/>
+		<property name="classpathRoot" value="es" />
+		<property name="autoscan" value="false" />
 		<property name="mappings">
 			<array>
 				<value>umls/entity</value>
@@ -45,18 +45,18 @@
 
 	<!-- This will scan every file in the 'basePackage' package and turn each 
 		interface into a MyBatis DAO -->
-<!-- 	<bean -->
-<!-- 		class="edu.mayo.cts2.framework.plugin.service.nlm.mybatis.osgi.MapperScannerConfigurer"> -->
-<!-- 		<property name="basePackage" -->
-<!-- 			value="edu.mayo.cts2.framework.plugin.service.nlm.database.dao" /> -->
-<!-- 		<property name="sqlSessionFactory" ref="sqlSessionFactory" /> -->
-<!-- 	</bean> -->
+	<!-- <bean -->
+	<!-- class="edu.mayo.cts2.framework.plugin.service.nlm.mybatis.osgi.MapperScannerConfigurer"> -->
+	<!-- <property name="basePackage" -->
+	<!-- value="edu.mayo.cts2.framework.plugin.service.nlm.database.dao" /> -->
+	<!-- <property name="sqlSessionFactory" ref="sqlSessionFactory" /> -->
+	<!-- </bean> -->
 
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="configLocation" value="mybatis/mybatis-config.xml" />
 	</bean>
-	
+
 	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg index="0" ref="sqlSessionFactory" />
 	</bean>
