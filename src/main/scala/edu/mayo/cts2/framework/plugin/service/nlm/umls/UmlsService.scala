@@ -9,8 +9,6 @@ import edu.mayo.cts2.framework.plugin.service.nlm.umls.dao.SabResult
 @Component
 class UmlsService {
 
-  val NLM_NS = "http:/id.nlm.nih.gov/cui/"
-
   @Resource
   var umlsDao: UmlsDao = _
 
@@ -55,11 +53,11 @@ class UmlsService {
 
   def getUriFromRSab(rsab: String): String = {
     cache()
-    NLM_NS + get(rsab, rsabToCuiMap)
+    UmlsConstants.NLM_CUI_NS + get(rsab, rsabToCuiMap)
   }
 
   def getUriFromVSab(vsab: String): String = {
     cache()
-    NLM_NS + get(vsab, vsabToCuiMap)
+    UmlsConstants.NLM_CUI_NS + get(vsab, vsabToCuiMap)
   }
 }

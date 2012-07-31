@@ -15,5 +15,12 @@
          WHERE
          	mrsab.CURVER = 'Y'
 	</select>
+	
+	
+	<select id="getMrsabRows" 
+	resultType="java.util.HashMap">
+		 SELECT *
+         	FROM MRSAB
+	</select>
 
 </mapper>

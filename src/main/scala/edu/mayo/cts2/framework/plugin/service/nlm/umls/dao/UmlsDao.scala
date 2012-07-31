@@ -2,7 +2,8 @@ package edu.mayo.cts2.framework.plugin.service.nlm.umls.dao
 
 import scala.collection.JavaConverters.asScalaBufferConverter
 import scala.reflect.BeanProperty
-
+import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 import org.mybatis.spring.SqlSessionTemplate
 import org.springframework.stereotype.Component
 
@@ -16,6 +17,10 @@ class UmlsDao {
 
   def getSabs(): Iterable[SabResult] = {
     template.selectList[SabResult]("getSabs").asScala
+  }
+
+  def getMrsabRows(): Iterable[Map[String, String]] = {
+    template.selectList[java.util.HashMap[String,String]]("getMrsabRows").map( x =>  x.asScala.toMap )
   }
 }
 

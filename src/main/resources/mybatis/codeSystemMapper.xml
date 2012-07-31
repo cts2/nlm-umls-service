@@ -8,17 +8,6 @@
 	
 </resultMap>
 
-	<select id="getCodeSystems" 
-	fetchSize="-2147483648"
-	resultSetType="FORWARD_ONLY"
-	resultType="edu.mayo.cts2.framework.plugin.service.nlm.database.dao.CodeSystemResult">
-		 SELECT mc.CODE as code, mc.SAB as sab, mc.STR as description, md.DEF as definition, mr.RANK as rank
-         FROM MRCONSO mc
-         LEFT JOIN MRRANK mr
-            ON (mc.SAB = mr.SAB and mc.TTY = mr.TTY)  
-         LEFT JOIN MRDEF md
-            ON mc.CUI = md.CUI AND mc.AUI = md.AUI AND mc.SAB = md.SAB
-
-	</select>
+	
 
 </mapper>

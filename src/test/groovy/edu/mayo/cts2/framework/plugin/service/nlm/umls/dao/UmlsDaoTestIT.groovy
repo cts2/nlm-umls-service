@@ -22,5 +22,10 @@ class UmlsDaoTestIT extends AbstractTestBase {
 	void TestGetSabsNotNull(){
 		assertNotNull dao.getSabs()
 	}
+	
+	@Test
+	void TestGetMrsabRowsNotNull(){
+		assertNotNull dao.getMrsabRows()
+	}
 }
 
