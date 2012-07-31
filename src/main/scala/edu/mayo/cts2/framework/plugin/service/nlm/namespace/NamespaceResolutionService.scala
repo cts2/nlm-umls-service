@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import clojure.lang.RT
 import edu.mayo.cts2.framework.plugin.service.nlm.umls.UmlsService
+import javax.annotation.Resource
 
 @Component
 class NamespaceResolutionService {
@@ -17,6 +18,7 @@ class NamespaceResolutionService {
   @Value("${namespaceServiceUrl}")
   var namespaceServiceUrl: String = _
   
+  @Resource
   var umlsService: UmlsService = _
 
   def prefixToUri(prefix: String): String = {
