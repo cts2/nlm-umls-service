@@ -57,9 +57,12 @@
 		</site>
 	</distributionManagement>
 
+	<properties>
+		<forkMode>never</forkMode>
+	</properties>
+	
 	<build>
 		<plugins>
-
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
