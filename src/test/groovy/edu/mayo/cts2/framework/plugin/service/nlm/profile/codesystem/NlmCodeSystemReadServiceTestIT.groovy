@@ -32,5 +32,12 @@ class NlmCodeSystemReadServiceTestIT extends AbstractTestBase {
 
 		assertNotNull service.read(id, null)
 	}
+	
+	@Test
+	void TestHasContacts() {
+		def id = ModelUtils.nameOrUriFromName("SNOMEDCT")
+
+		assertEquals 2, service.read(id, null).sourceAndRoleCount
+	}
 
 }

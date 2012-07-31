@@ -15,6 +15,10 @@ import edu.mayo.cts2.framework.service.profile.codesystem.CodeSystemReadService
 import edu.mayo.cts2.framework.model.codesystem.CodeSystemCatalogEntry
 import edu.mayo.cts2.framework.plugin.service.nlm.umls.dao.UmlsDao
 import org.springframework.beans.factory.InitializingBean
+import edu.mayo.cts2.framework.model.core.SourceAndRoleReference
+import edu.mayo.cts2.framework.model.core.SourceReference
+import edu.mayo.cts2.framework.model.core.RoleReference
+import edu.mayo.cts2.framework.plugin.service.nlm.umls.UmlsConstants
 
 @Component
 class NlmCodeSystemReadService
@@ -44,10 +48,35 @@ class NlmCodeSystemReadService
 
   def mapToCodeSystem = (map: Map[String, String]) => {
     val cs = new CodeSystemCatalogEntry()
-    cs.setCodeSystemName(map.get("RSAB").get)
+    val rsab = map.get("RSAB").get
+    val formalName = map.get("SSN").get
+ 
+    cs.setCodeSystemName(rsab)
+    cs.setFormalName(formalName)
+    map.get("SLC").foreach { 
+      (slc:String) => {
+        cs.addSourceAndRole(buildSourceAndRole(slc, UmlsConstants.SOURCE_LICENSE_CONTACT))
+      }
+    }
+    map.get("SCC").foreach { 
+      (scc:String) => {
+            cs.addSourceAndRole(buildSourceAndRole(scc, UmlsConstants.SOURCE_CONTENT_CONTACT))
+      }
+    }
 
-    Map(map.get("RSAB").get -> cs)
-  }: Map[String, CodeSystemCatalogEntry]
+    Map(rsab -> cs)
+  }
+  
+  def buildSourceAndRole(name:String, role:String) : SourceAndRoleReference = {
+    val sourceAndRole = new SourceAndRoleReference()
+    val sourceRef = new SourceReference(name)
+    val roleRef = new RoleReference(role)
+    
+    sourceAndRole.setSource(sourceRef)
+    sourceAndRole.setRole(roleRef)
+    
+    sourceAndRole
+  }
 
   @Override
   def read(identifier: NameOrURI,

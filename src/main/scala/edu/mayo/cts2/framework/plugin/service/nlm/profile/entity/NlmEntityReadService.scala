@@ -31,6 +31,7 @@ import edu.mayo.cts2.framework.service.profile.entitydescription.EntityDescripti
 import javax.annotation.Resource
 import edu.mayo.cts2.framework.plugin.service.nlm.umls.UmlsService
 import edu.mayo.cts2.framework.plugin.service.nlm.namespace.NamespaceResolutionService
+import edu.mayo.cts2.framework.plugin.service.nlm.umls.UmlsConstants
 
 @Component
 class NlmEntityReadService extends AbstractService 
@@ -77,6 +78,7 @@ class NlmEntityReadService extends AbstractService
 
     val code = source.get("code").toString()
     val sab = source.get("sab").toString()
+    val cui = source.get("cui").toString()
     val descriptions = source.get("descriptions").asInstanceOf[java.util.List[java.util.HashMap[String, String]]].asScala
     val definitions = source.get("definitions").asInstanceOf[java.util.List[java.util.HashMap[String, String]]].asScala
 
@@ -93,6 +95,7 @@ class NlmEntityReadService extends AbstractService
     })
 
     entity.setEntityID(ModelUtils.createScopedEntityName(code, sab))
+    entity.addAlternateEntityID(ModelUtils.createScopedEntityName(cui, UmlsConstants.NLM_CUI_NS_PREFIX))
 
     entity.setAbout(namespaceResolutionService.prefixToUri(sab) + code)
 

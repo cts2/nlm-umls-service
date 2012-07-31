@@ -30,6 +30,7 @@ class EntityDatabaseDao {
 class EntityResult {
   var sab: String = _
   var code: String = _
+  var cui: String = _
   var rank: Int = _
   var definition: String = _
   var description: String = _

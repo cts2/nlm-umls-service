@@ -29,12 +29,13 @@ class EntityIndexer {
 
       map.startObject().
         field("code", firstResult.code).
-        field("sab", firstResult.sab)
+        field("sab", firstResult.sab).
+        field("cui", firstResult.cui)
 
       map = map.startArray("definitions")
       for (next: EntityResult <- results) {
         if (next.definition != null) {
-          map = map.startObject().field("value", "k").endObject()
+          map = map.startObject().field("value", next.definition).endObject()
         }
       }
       map = map.endArray()

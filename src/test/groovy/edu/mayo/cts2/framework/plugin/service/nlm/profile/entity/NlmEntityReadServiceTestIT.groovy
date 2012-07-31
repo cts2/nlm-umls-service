@@ -12,6 +12,7 @@ import edu.mayo.cts2.framework.core.xml.DelegatingMarshaller
 import edu.mayo.cts2.framework.model.util.ModelUtils
 import edu.mayo.cts2.framework.plugin.service.nlm.namespace.NamespaceResolutionService
 import edu.mayo.cts2.framework.plugin.service.nlm.test.AbstractTestBase
+import edu.mayo.cts2.framework.plugin.service.nlm.umls.UmlsConstants
 import edu.mayo.cts2.framework.service.profile.entitydescription.name.EntityDescriptionReadId
 
 
@@ -74,6 +75,24 @@ class NlmEntityReadServiceTestIT extends AbstractTestBase {
 		assertNotNull ed
 		
 		assertTrue ed.choiceValue.designation.size() > 0
+	}
+	
+	@Test
+	void TestReadHasCuiAlternateId() {
+		def id = new EntityDescriptionReadId(
+			ModelUtils.createScopedEntityName("001", "MCM"),
+			ModelUtils.nameOrUriFromName("MCM92"))
+
+		def ed = service.read(id, null)
+		assertNotNull ed
+		
+		assertEquals 1, ed.choiceValue.alternateEntityID.size()
+		
+		assertEquals "CUI", 
+			ed.choiceValue.getAlternateEntityID(0).namespace
+			
+		assertEquals "C0150091",
+			ed.choiceValue.getAlternateEntityID(0).name
 	}
 	
 }
