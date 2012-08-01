@@ -20,12 +20,12 @@ class UmlsServiceTestIT extends AbstractTestBase {
 	
 	@Test
 	void TestGetRSab(){
-		assertEquals "COSTAR", service.getRSab("COSTAR_89-95")
+		assertEquals "COSTAR", service.getRSab("COSTAR_89-95").get()
 	}
 	
 	@Test
 	void TestGetVSab(){
-		assertEquals "COSTAR_89-95", service.getVSab("COSTAR")
+		assertEquals "COSTAR_89-95", service.getVSab("COSTAR").get()
 	}
 }
 

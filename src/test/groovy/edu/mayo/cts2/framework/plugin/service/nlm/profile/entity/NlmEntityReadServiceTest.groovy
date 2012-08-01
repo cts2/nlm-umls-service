@@ -5,6 +5,7 @@ import static org.junit.Assert.*
 import org.easymock.EasyMock
 import org.junit.Test
 
+import scala.Some
 import edu.mayo.cts2.framework.model.util.ModelUtils
 import edu.mayo.cts2.framework.plugin.service.nlm.umls.UmlsService
 import edu.mayo.cts2.framework.service.profile.entitydescription.name.EntityDescriptionReadId
@@ -16,7 +17,7 @@ public class NlmEntityReadServiceTest {
 	void TestGetKey() {
 		def svc = new NlmEntityReadService()
 		def umlsService = EasyMock.createMock(UmlsService)
-		EasyMock.expect(umlsService.getRSab("NCI-2.0")).andReturn("NCI").once()
+		EasyMock.expect(umlsService.getRSab("NCI-2.0")).andReturn(new Some("NCI")).once()
 		EasyMock.replay(umlsService)
 		
 		svc.umlsService = umlsService
@@ -25,7 +26,7 @@ public class NlmEntityReadServiceTest {
 			ModelUtils.createScopedEntityName("C12727", "NCI"),
 			ModelUtils.nameOrUriFromName("NCI-2.0"))
 		
-		def key = svc.getKey(id)
+		def key = svc.getKey(id).get()
 		
 		assertEquals "NCI:C12727", key
 	}
