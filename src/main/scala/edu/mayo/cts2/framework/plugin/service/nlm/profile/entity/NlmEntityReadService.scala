@@ -32,14 +32,17 @@ import javax.annotation.Resource
 import edu.mayo.cts2.framework.plugin.service.nlm.umls.UmlsService
 import edu.mayo.cts2.framework.plugin.service.nlm.namespace.NamespaceResolutionService
 import edu.mayo.cts2.framework.plugin.service.nlm.umls.UmlsConstants
+import edu.mayo.cts2.framework.model.core.Property
+import edu.mayo.cts2.framework.model.core.StatementTarget
+import edu.mayo.cts2.framework.model.core.PredicateReference
 
 @Component
-class NlmEntityReadService extends AbstractService 
-	with EntityDescriptionReadService {
+class NlmEntityReadService extends AbstractService
+  with EntityDescriptionReadService {
 
   @Resource
   var indexDao: ElasticSearchIndexDao = _
-  
+
   @Resource
   var namespaceResolutionService: NamespaceResolutionService = _
 
@@ -55,20 +58,41 @@ class NlmEntityReadService extends AbstractService
 
   def read(id: EntityDescriptionReadId, context: ResolvedReadContext = null): EntityDescription = {
 
-    val result = indexDao.get("entity", getKey(id), entityFormatter)
+    val key = getKey(id).getOrElse(return null)
 
-    if (result.isDefined) {
-      result get
-    } else {
-      null
-    }
+    val result = indexDao.get("entity", key, entityFormatter)
+
+    result.getOrElse(return null)
   }
 
-  private def getKey(id: EntityDescriptionReadId): String = {
+  private def getKey(id: EntityDescriptionReadId): Option[String] = {
 
     val csvName = this.umlsService.getRSab(id.getCodeSystemVersion().getName())
 
-    List(csvName, ":", id.getEntityName().getName()).reduceLeft(_ + _)
+    if (csvName.isDefined) {
+      Some(List(csvName.get, ":", id.getEntityName().getName()).reduceLeft(_ + _))
+    } else {
+      None
+    }
+  }
+
+  private def buildCuiProperty(cui: String): Property = {
+
+    val cuiProp: Property = new Property()
+
+    val target: StatementTarget = new StatementTarget()
+    target.setLiteral(ModelUtils.createOpaqueData(cui))
+
+    cuiProp.addValue(target)
+    
+    val predicate = new PredicateReference()
+    predicate.setName(UmlsConstants.NLM_CUI_NS_PREFIX)
+    predicate.setNamespace(UmlsConstants.NLM_NS_PREFIX)
+    predicate.setUri(UmlsConstants.NLM_CUI_NS)
+   
+    cuiProp.setPredicate(predicate)
+    
+    cuiProp
   }
 
   def entityFormatter = (getResponse: GetResponse) => {
@@ -107,7 +131,9 @@ class NlmEntityReadService extends AbstractService
     entity.addEntityType(entityType)
 
     entity.setDescribingCodeSystemVersion(
-        buildCodeSystemVersionReference(sab))
+      buildCodeSystemVersionReference(sab))
+      
+    entity.addProperty(buildCuiProperty(cui))
 
     var entityDescription = new EntityDescription()
     entityDescription.setNamedEntity(entity)

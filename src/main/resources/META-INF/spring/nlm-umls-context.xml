@@ -60,5 +60,9 @@
 	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg index="0" ref="sqlSessionFactory" />
 	</bean>
+	
+	<bean id="entityIndexer" class="edu.mayo.cts2.framework.plugin.service.nlm.index.EntityIndexer">
+		<property name="lazyIndexInit" value="false" />
+	</bean>
 
 </beans>

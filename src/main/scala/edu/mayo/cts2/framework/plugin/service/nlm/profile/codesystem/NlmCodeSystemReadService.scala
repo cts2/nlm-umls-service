@@ -53,6 +53,8 @@ class NlmCodeSystemReadService
  
     cs.setCodeSystemName(rsab)
     cs.setFormalName(formalName)
+    cs.setAbout(umlsService.getUriFromRSab(rsab))
+    
     map.get("SLC").foreach { 
       (slc:String) => {
         cs.addSourceAndRole(buildSourceAndRole(slc, UmlsConstants.SOURCE_LICENSE_CONTACT))

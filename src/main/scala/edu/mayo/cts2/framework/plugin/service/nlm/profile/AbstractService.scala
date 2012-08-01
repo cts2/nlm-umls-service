@@ -12,6 +12,7 @@ import edu.mayo.cts2.framework.plugin.service.nlm.umls.UmlsService
 import javax.annotation.Resource
 import edu.mayo.cts2.framework.model.core.NameAndMeaningReference
 import edu.mayo.cts2.framework.model.core.CodeSystemReference
+import edu.mayo.cts2.framework.core.url.UrlConstructor
 
 abstract class AbstractService extends BaseService {
 
@@ -24,6 +25,9 @@ abstract class AbstractService extends BaseService {
 
   @Resource
   var umlsService: UmlsService = _
+  
+  @Resource
+  var urlConstructor: UrlConstructor = _
   
   def setUmlsService(service: UmlsService){
     umlsService = service
@@ -53,7 +57,7 @@ abstract class AbstractService extends BaseService {
     val versionRef = new NameAndMeaningReference()
     val codeSystemRef = new CodeSystemReference()
 
-    val vsab = umlsService.getVSab(sab)
+    val vsab = umlsService.getVSab(sab).getOrElse( throw new RuntimeException("SAB: " + sab + " not found."))
     val csUri = umlsService.getUriFromRSab(sab)
     val csvUri = umlsService.getUriFromVSab(vsab)
 
@@ -62,6 +66,7 @@ abstract class AbstractService extends BaseService {
 
     codeSystemRef.setContent(sab)
     codeSystemRef.setUri(csUri)
+    codeSystemRef.setHref(urlConstructor.createCodeSystemUrl(sab))
 
     ref.setCodeSystem(codeSystemRef)
     ref.setVersion(versionRef)

@@ -1,7 +1,6 @@
 package edu.mayo.cts2.framework.plugin.service.nlm.index.dao
 
 import scala.Array.fallbackCanBuildFrom
-
 import org.elasticsearch.action.bulk.BulkRequest
 import org.elasticsearch.action.get.GetRequest
 import org.elasticsearch.action.get.GetResponse
@@ -13,16 +12,16 @@ import org.elasticsearch.index.query.TextQueryBuilder
 import org.elasticsearch.search.SearchHit
 import org.elasticsearch.search.SearchHits
 import org.springframework.stereotype.Component
-
 import javax.annotation.Resource
+import edu.mayo.cts2.framework.plugin.service.nlm.index.IndexConstants
 
 @Component
 class ElasticSearchIndexDao {
 
-  val INDEX_NAME = "umls"
+  val INDEX_NAME = IndexConstants.UMLS_INDEX_NAME
 
   @Resource
-  val client: Client = null
+  var client: Client = _
 
   def get[T](indexType: String, key: String, formatter: (GetResponse) => T): Option[T] = {
     var request = new GetRequest(INDEX_NAME, indexType, key);
@@ -69,9 +68,13 @@ class ElasticSearchIndexDao {
   def runQuery[T](results: SearchHits, formatter: (SearchHit) => T): List[T] = {
     (for (hit <- results.getHits()) yield formatter(hit)).toList
   }
+  
+}
 
-  def main(args: Array[String]) {
-
+object test {
+  
+   def main(args: Array[String]) {
+/*
     val q = () => {
       query("entity", new TextQueryBuilder("entity.code_system", "SNOMEDCT"), 0, 20)
     }
@@ -83,9 +86,18 @@ class ElasticSearchIndexDao {
     //val list = new ElasticSearchIndexDao().runQuery(q, f)
 
     //for(i <- list) println(i)
+*/
+    
+    List("hi", "there", "mr").zipWithIndex foreach { 
+       
+       case(el, 0) => println("FIRST: " + el)
+       case(el, i) => println(i + ": " + el)
+       println("->hi")
+     
+    }
 
   }
-
+   
 }
 
 class Indexable(_id: String, _content: XContentBuilder) {

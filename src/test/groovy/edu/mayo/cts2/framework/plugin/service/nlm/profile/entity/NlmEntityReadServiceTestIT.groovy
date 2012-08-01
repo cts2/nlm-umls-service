@@ -54,6 +54,15 @@ class NlmEntityReadServiceTestIT extends AbstractTestBase {
 	}
 	
 	@Test
+	void TestReadNotFoundBadVSab() {
+		def id = new EntityDescriptionReadId(
+			ModelUtils.createScopedEntityName("001", "MCM"),
+			ModelUtils.nameOrUriFromName("MCM92__INVALID"))
+
+		assertNull service.read(id, null)
+	}
+	
+	@Test
 	void TestReadValidXml() {
 		def id = new EntityDescriptionReadId(
 			ModelUtils.createScopedEntityName("001", "MCM"),
@@ -95,4 +104,22 @@ class NlmEntityReadServiceTestIT extends AbstractTestBase {
 			ed.choiceValue.getAlternateEntityID(0).name
 	}
 	
+	@Test
+	void TestReadHasDefinition() {
+		def id = new EntityDescriptionReadId(
+			ModelUtils.createScopedEntityName("001", "MCM"),
+			ModelUtils.nameOrUriFromName("MCM92"))
+
+		def ed = service.read(id, null)
+		assertNotNull ed
+		
+		assertEquals 1, ed.choiceValue.definition.size()
+		
+		def definition = 
+		"""Investigation of therapeutic alternatives in which individuals of one time period and under one treatment are compared with individuals at a subsequent time, treated in a different fashion. If the disorder is not fatal and the "before" treatment is not curative, the same individuals may be studied in the before and after periods, strengthening the design through increased group comparability for the two periods."""
+		
+		assertEquals definition, ed.choiceValue.getDefinition(0).value.content
+	}
+	
+
 }

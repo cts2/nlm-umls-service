@@ -38,15 +38,15 @@ class UmlsService {
   }
 
   private def get(sab: String, map: Map[String, String]) = {
-    map.getOrElse(sab, throw new RuntimeException("SAB: " + sab + " not found."))
+    map.get(sab)
   }
 
-  def getVSab(rsab: String): String = {
+  def getVSab(rsab: String): Option[String] = {
     cache()
     get(rsab, rsabToVsabMap)
   }
 
-  def getRSab(rsab: String): String = {
+  def getRSab(rsab: String): Option[String] = {
     cache()
     get(rsab, vsabToRsabMap)
   }

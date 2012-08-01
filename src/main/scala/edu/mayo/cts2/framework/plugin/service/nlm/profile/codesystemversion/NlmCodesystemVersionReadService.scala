@@ -27,7 +27,8 @@ class NlmCodeSystemVersionService extends AbstractService with CodeSystemVersion
       throw new RuntimeException("Only 'CURRENT' tag is supported")
     }
 
-    val vsab = umlsService.getVSab(codeSystem.getName)
+    val vsab = umlsService.getVSab(codeSystem.getName).getOrElse( 
+        throw new RuntimeException("SAB: " + codeSystem.getName + " not found."))
     val version = new CodeSystemVersionCatalogEntry()
     version.setCodeSystemVersionName(vsab)
 

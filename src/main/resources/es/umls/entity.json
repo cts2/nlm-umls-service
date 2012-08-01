@@ -11,6 +11,9 @@
                 "properties": {
                     "value": {
                         "type": "string"
+                    },
+                    "preferred": {
+                        "type": "boolean"
                     }
                 }
             },
