@@ -9,7 +9,6 @@ import edu.mayo.cts2.framework.plugin.service.nlm.profile.AbstractService
 import gov.cdc.vocab.service.VocabService
 import gov.cdc.vocab.service.bean.ValueSet
 import collection.JavaConversions._
-
 import javax.annotation.Resource
 import java.util.Set
 import edu.mayo.cts2.framework.service.profile.valueset.{ValueSetQuery, ValueSetReadService, ValueSetQueryService}
@@ -17,6 +16,8 @@ import edu.mayo.cts2.framework.model.command.{Page, ResolvedReadContext}
 import edu.mayo.cts2.framework.model.directory.DirectoryResult
 import edu.mayo.cts2.framework.model.valueset.{ValueSetCatalogEntrySummary, ValueSetCatalogEntry}
 import edu.mayo.cts2.framework.model.core.{PropertyReference, PredicateReference, SortCriteria, MatchAlgorithmReference}
+import gov.cdc.vocab.service.dto.input.CodeSystemSearchCriteriaDto
+import edu.mayo.cts2.framework.plugin.service.nlm.phinvads.dao.PhinVadsDao
 
 @Component
 class PhinVadsValueSetQueryService
@@ -45,6 +46,7 @@ class PhinVadsValueSetQueryService
 
   private def transformPhinVadsValueSet = (phinvadsvs: ValueSet) => {
     val entry: ValueSetCatalogEntry = new ValueSetCatalogEntry()
+
     entry.setAbout(phinvadsvs.getOid);
     entry.setValueSetName(phinvadsvs.getName())
     entry

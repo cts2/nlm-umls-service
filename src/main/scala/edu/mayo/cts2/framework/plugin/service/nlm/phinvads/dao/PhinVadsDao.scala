@@ -1,4 +1,4 @@
-package edu.mayo.cts2.framework.plugin.service.nlm.profile.valueset
+package edu.mayo.cts2.framework.plugin.service.nlm.phinvads.dao
 
 import java.lang.Override
 import scala.collection.JavaConversions._
@@ -23,6 +23,11 @@ class PhinVadsDao {
 
   var valueSets: Seq[ValueSet] = cacheValueSets()
 
+  var valueSetByNameMap: Map[String, ValueSet] =
+    valueSets.foldLeft(Map[String, ValueSet]())((map, valueSet) => {
+      map ++ Map(valueSet.getCode() -> valueSet)
+    })
+
   var valueSetVersions: Seq[ValueSetVersion] = cacheValueSetVersions()
 
   private def initPhinVadsClient() = {
@@ -35,10 +40,14 @@ class PhinVadsDao {
     valueSets
   }
 
+  def getValueSetOid(valueSetName:String): String = {
+    valueSetByNameMap.get(valueSetName).get.getOid
+  }
+
   def getValueSetVersions(): Seq[ValueSetVersion] = {
     valueSetVersions
   }
-  
+
   private def cacheValueSets() = {
     vocabService.getAllValueSets().getValueSets()
   }
