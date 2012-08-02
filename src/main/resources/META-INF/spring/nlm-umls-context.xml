@@ -62,7 +62,7 @@
 	</bean>
 	
 	<bean id="entityIndexer" class="edu.mayo.cts2.framework.plugin.service.nlm.index.EntityIndexer">
-		<property name="lazyIndexInit" value="false" />
+		<property name="lazyIndexInit" value="true" />
 	</bean>
 
 </beans>
