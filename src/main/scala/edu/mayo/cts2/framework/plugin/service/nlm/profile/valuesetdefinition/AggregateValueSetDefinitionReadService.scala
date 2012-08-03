@@ -16,8 +16,10 @@ import edu.mayo.cts2.framework.service.profile.valuesetdefinition.name.ValueSetD
 import edu.mayo.cts2.framework.plugin.service.nlm.phinvads.dao.PhinVadsDao
 import javax.annotation.Resource
 import gov.cdc.vocab.service.dto.input.ValueSetVersionSearchCriteriaDto
+import edu.mayo.cts2.framework.util.spring.AggregateService
 
 @Component
+@AggregateService
 class AggregateSetDefinitionReadService extends AbstractService with ValueSetDefinitionReadService {
 
   @Resource

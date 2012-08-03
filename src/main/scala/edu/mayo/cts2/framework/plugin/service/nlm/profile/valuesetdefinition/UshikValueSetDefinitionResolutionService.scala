@@ -37,11 +37,11 @@ import edu.mayo.cts2.framework.plugin.service.nlm.profile.AbstractService
 @Component
 class UshikValueSetDefinitionResolutionService extends AbstractService with ValueSetDefinitionResolutionService {
 
-  val measuresPath = "cache/ushik/valuesets.out"
+  val measuresPath = "cache/ushik/valueSets.out"
 
   val valueSets: Map[String, Seq[Map[String, String]]] = JsonParser.parse(
     IOUtils.toString(
-      new ClassPathResource(measuresPath).getInputStream)).values.asInstanceOf[Map[String, Seq[Map[String, String]]]]
+      new ClassPathResource(measuresPath).getInputStream()  )).values.asInstanceOf[Map[String, Seq[Map[String, String]]]]
 
   val ushikService: USHIK = new USHIKService().getUSHIKPort()
 
@@ -99,8 +99,10 @@ class UshikValueSetDefinitionResolutionService extends AbstractService with Valu
     page: Page): ResolvedValueSetResult[EntitySynopsis] = {
 
     val valueSetId = id.getName()
+    
+    val codeMap = valueSets.get(valueSetId).getOrElse( return null );
 
-    val codes = valueSets.get(valueSetId).get.foldLeft(List[EntitySynopsis]())(
+    val codes = codeMap.foldLeft(List[EntitySynopsis]())(
       (list, map) => {
         val synopsis = new EntitySynopsis()
         synopsis.setName(map.get("code").get)

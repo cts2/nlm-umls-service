@@ -20,43 +20,39 @@ import gov.cdc.vocab.service.dto.input.ValueSetVersionSearchCriteriaDto
 @Component
 class UshikValueSetDefinitionReadService extends AbstractService with ValueSetDefinitionReadService {
 
-  @Resource
-  var phinVadsDao: PhinVadsDao = _
-  
   /**
    * This is incomplete... this is only here to map the 'CURRENT' tag to a CodeSystemVersionName.
    */
   @Override
   def readByTag(
-                 valueSet: NameOrURI,
-                 tag: VersionTagReference, readContext: ResolvedReadContext): LocalIdValueSetDefinition = {
+    valueSet: NameOrURI,
+    tag: VersionTagReference, readContext: ResolvedReadContext): LocalIdValueSetDefinition = {
 
     if (tag.getContent() == null || !tag.getContent().equals("CURRENT")) {
       throw new RuntimeException("Only 'CURRENT' tag is supported")
     }
-    
-    val valueSetName = valueSet.getName()
-    
-    val valueSetOid = phinVadsDao.getValueSetOid(valueSetName)
-    
-    val currentValueSet = 
-      phinVadsDao.vocabService.getValueSetVersionByValueSetOidAndVersionNumber(valueSetOid, null)
 
-    val localIdDefinition = 
-      new LocalIdValueSetDefinition(currentValueSet.getValueSetVersion().getVersionNumber().toString(), null)
-   
-    localIdDefinition
+    val valueSetName = valueSet.getName()
+
+    if (valueSetName.startsWith("A_") || valueSetName.startsWith("N_")) {
+      val localIdDefinition =
+        new LocalIdValueSetDefinition(valueSetName, null)
+
+      localIdDefinition
+    } else {
+      null
+    }
   }
 
   @Override
   def existsByTag(valueSet: NameOrURI,
-                  tag: VersionTagReference, readContext: ResolvedReadContext): Boolean = {
+    tag: VersionTagReference, readContext: ResolvedReadContext): Boolean = {
     throw new UnsupportedOperationException()
   }
 
   @Override
   def read(identifier: ValueSetDefinitionReadId,
-           readContext: ResolvedReadContext): LocalIdValueSetDefinition = {
+    readContext: ResolvedReadContext): LocalIdValueSetDefinition = {
     throw new UnsupportedOperationException()
   }
 
