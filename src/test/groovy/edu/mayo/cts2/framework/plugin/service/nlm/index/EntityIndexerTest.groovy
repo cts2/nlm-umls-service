@@ -32,9 +32,4 @@ class EntityIndexerTest {
 		assertTrue indexer.getDocsCount() > 0
 	}
 	
-	@Test
-	void TestValueSetsAreCached() {
-		assertNotNull service.cacheValueSets()
-	}
-	
 }
