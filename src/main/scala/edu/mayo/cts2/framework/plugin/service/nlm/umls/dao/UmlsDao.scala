@@ -20,8 +20,16 @@ class UmlsDao {
   }
 
   def getMrsabRows(): Iterable[Map[String, String]] = {
-    template.selectList[java.util.HashMap[String,String]]("getMrsabRows").map( x =>  x.asScala.toMap )
+    template.selectList[java.util.HashMap[String, String]]("getMrsabRows").map(x => x.asScala.toMap)
   }
+
+  def getStrFromScui = (scui: String, sab:String) => {
+    template.selectOne("getStrFromScui", Map("scui" -> scui, "sab" -> sab).asJava )
+  }: String
+
+  def getStrFromCode = (code: String, sab:String) => {
+    template.selectOne("getStrFromCode", Map("code" -> code, "sab" -> sab).asJava )
+  }: String
 }
 
 class SabResult {

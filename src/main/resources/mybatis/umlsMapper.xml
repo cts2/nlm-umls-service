@@ -22,5 +22,27 @@
 		 SELECT *
          	FROM MRSAB
 	</select>
+	
+	<select id="getStrFromCode" resultType="java.lang.String">
+		SELECT mrconso.STR 
+		FROM MRCONSO mrconso
+		INNER JOIN MRRANK mrrank 
+			ON ( mrconso.SAB = mrrank.SAB and mrconso.TTY = mrrank.TTY )
+		WHERE
+			mrconso.CODE = #{code}  and mrconso.SAB = #{sab}
+		ORDER BY mrrank.rank 
+		LIMIT 1
+	</select>
+	
+	<select id="getStrFromScui" resultType="java.lang.String">
+		SELECT mrconso.STR 
+		FROM MRCONSO mrconso
+		INNER JOIN MRRANK mrrank 
+			ON ( mrconso.SAB = mrrank.SAB and mrconso.TTY = mrrank.TTY )
+		WHERE
+			mrconso.SCUI = #{scui}  and mrconso.SAB = #{sab}
+		ORDER BY mrrank.rank 
+		LIMIT 1
+	</select>
 
 </mapper>
