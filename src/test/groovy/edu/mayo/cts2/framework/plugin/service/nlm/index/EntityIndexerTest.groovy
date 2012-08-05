@@ -14,11 +14,8 @@ import edu.mayo.cts2.framework.plugin.service.nlm.test.AbstractTestBase;
 
 @RunWith(SpringJUnit4ClassRunner)
 @ContextConfiguration("/test-nlm-umls-context.xml")
-class EntityIndexerTest {
+class EntityIndexerTest extends AbstractTestBase {
 
-	@Resource
-	def UshikValueSetDefinitionResolutionService service
-	
 	@Resource
 	def EntityIndexer indexer
 
