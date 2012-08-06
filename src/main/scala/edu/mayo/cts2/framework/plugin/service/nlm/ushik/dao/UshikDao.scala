@@ -39,7 +39,7 @@ class UshikDao {
     IOUtils.toString(
       new ClassPathResource(measuresPath).getInputStream()))
       
-  val valueSets: Map[String, QualityDataElement] = cacheValueSets()
+  var valueSets: Map[String, QualityDataElement] = _//cacheValueSets()
 
   def cacheValueSets() = {
     val measures: Seq[Int] = getAllMeasureIds()
@@ -49,7 +49,8 @@ class UshikDao {
 
         map ++ ushikService.getMeasure(getSession(), measureId).getQualityDataElements().foldLeft(Map[String, QualityDataElement]())(
           (innerMap, qde) => {
-
+            
+        	  println(qde.getOid())
             innerMap ++ Map(qde.getQDSId -> qde)
           })
       })
