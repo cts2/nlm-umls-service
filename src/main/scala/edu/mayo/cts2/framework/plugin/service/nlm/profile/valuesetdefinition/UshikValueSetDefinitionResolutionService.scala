@@ -69,7 +69,7 @@ class UshikValueSetDefinitionResolutionService extends AbstractService with Valu
 
     val valueSetId = id.getName()
 
-    val codeMap = ushikDao.valueSets.get(valueSetId).getOrElse(return null);
+    val codeMap = ushikDao.valueSetEntries.get(valueSetId).getOrElse(return null);
 
     val codes = codeMap.foldLeft(List[EntitySynopsis]())(
       (list, map) => {

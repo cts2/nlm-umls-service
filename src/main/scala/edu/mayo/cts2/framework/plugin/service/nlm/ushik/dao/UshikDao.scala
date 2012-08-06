@@ -12,6 +12,7 @@ import scala.collection.mutable.MutableList
 import org.apache.commons.io.IOUtils
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Component
+import gov.ahrq.ushik.webservices.QualityDataElement
 
 @Component
 class UshikDao {
@@ -33,12 +34,41 @@ class UshikDao {
     "HL7" -> "HL7V3.0",
     "ICD-9-CM" -> "ICD9CM",
     "HCPCS" -> "HCPCS")
-    
-  val valueSets: Map[String, Seq[Map[String, String]]] = com.codahale.jerkson.Json.parse[Map[String, Seq[Map[String, String]]]](
+
+  val valueSetEntries: Map[String, Seq[Map[String, String]]] = com.codahale.jerkson.Json.parse[Map[String, Seq[Map[String, String]]]](
     IOUtils.toString(
       new ClassPathResource(measuresPath).getInputStream()))
+      
+  val valueSets: Map[String, QualityDataElement] = cacheValueSets()
 
   def cacheValueSets() = {
+    val measures: Seq[Int] = getAllMeasureIds()
+ 
+    val valueSets = measures.foldLeft(Map[String, QualityDataElement]())(
+      (map, measureId: Int) => {
+
+        map ++ ushikService.getMeasure(getSession(), measureId).getQualityDataElements().foldLeft(Map[String, QualityDataElement]())(
+          (innerMap, qde) => {
+
+            innerMap ++ Map(qde.getQDSId -> qde)
+          })
+      })
+      
+      valueSets
+  }
+
+  def getAllMeasureIds() = {
+    val measures: Seq[Int] = ushikService.getAllMeaningfulUseMeasures(getSession()).
+      getListItems().
+      foldLeft(Seq[Int]())(
+        (list, measure) => {
+          list ++ List(measure.getItemKey())
+        })
+
+    measures
+  }
+
+  private def cacheValueSetEntries() = {
     def lookupByCode = umlsDao.getStrFromCode
     def lookupByScui = umlsDao.getStrFromScui
 
@@ -53,12 +83,7 @@ class UshikDao {
       "ICD-9-CM" -> lookupByCode,
       "HCPCS" -> lookupByCode)
 
-    val measures: Seq[Int] = ushikService.getAllMeaningfulUseMeasures(getSession()).
-      getListItems().
-      foldLeft(Seq[Int]())(
-        (list, measure) => {
-          list ++ List(measure.getItemKey())
-        })
+    val measures: Seq[Int] = getAllMeasureIds()
 
     // val measures = List(145236000)
     val cache = measures.foldLeft(Map[String, Seq[Map[String, String]]]())(
