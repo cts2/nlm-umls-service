@@ -53,11 +53,11 @@ class UmlsService {
 
   def getUriFromRSab(rsab: String): String = {
     cache()
-    UmlsConstants.NLM_CUI_NS + get(rsab, rsabToCuiMap)
+    UmlsConstants.NLM_CUI_NS + get(rsab, rsabToCuiMap).get
   }
 
   def getUriFromVSab(vsab: String): String = {
     cache()
-    UmlsConstants.NLM_CUI_NS + get(vsab, vsabToCuiMap)
+    UmlsConstants.NLM_CUI_NS + get(vsab, vsabToCuiMap).get
   }
 }

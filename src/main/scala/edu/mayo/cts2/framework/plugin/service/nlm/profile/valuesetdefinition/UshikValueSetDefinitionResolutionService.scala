@@ -35,6 +35,8 @@ import net.liftweb.json.Extraction._
 import net.liftweb.json.Printer._
 import edu.mayo.cts2.framework.plugin.service.nlm.umls.dao.UmlsDao
 import javax.annotation.Resource
+import edu.mayo.cts2.framework.plugin.service.nlm.namespace.NamespaceResolutionService
+import edu.mayo.cts2.framework.plugin.service.nlm.ushik.dao.UshikDao
 
 @Component
 class UshikValueSetDefinitionResolutionService extends AbstractService with ValueSetDefinitionResolutionService {
@@ -42,13 +44,11 @@ class UshikValueSetDefinitionResolutionService extends AbstractService with Valu
   @Resource
   var umlsDao: UmlsDao = _
   
-  val measuresPath = "cache/ushik/valueSets.json"
+  @Resource
+  var ushikDao: UshikDao = _
 
-  val valueSets: Map[String, Seq[Map[String, String]]] = JsonParser.parse(
-    IOUtils.toString(
-      new ClassPathResource(measuresPath).getInputStream()  )).values.asInstanceOf[Map[String, Seq[Map[String, String]]]]
-
-  val ushikService: USHIK = new USHIKService().getUSHIKPort()
+  @Resource
+  var namespaceResolutionService: NamespaceResolutionService = _
 
   def getSupportedMatchAlgorithms: Set[_ <: MatchAlgorithmReference] = null
 
@@ -57,82 +57,6 @@ class UshikValueSetDefinitionResolutionService extends AbstractService with Valu
   def getSupportedSortReferences: Set[_ <: PropertyReference] = null
 
   def getKnownProperties: Set[PredicateReference] = null
-
-  def cacheValueSets() = {
-    def lookupByCode = umlsDao.getStrFromCode
-    def lookupByScui = umlsDao.getStrFromScui
-    
-	def codeLookupFuctnions = Map(
-								"CPT" -> lookupByCode, 
-								"SNOMED-CT" -> lookupByCode, 
-								"ICD-10-CM" -> lookupByCode, 
-								"LOINC" -> lookupByCode, 
-								"CVX" -> lookupByCode, 
-								"RxNorm" -> lookupByScui, 
-								"HL7" -> lookupByScui, 
-								"ICD-9-CM" -> lookupByCode, 
-								"HCPCS" -> lookupByCode)
-								
-	def sabs = Map(
-								"CPT" -> "CPT", 
-								"SNOMED-CT" -> "SNOMEDCT", 
-								"ICD-10-CM" -> "ICD10CM", 
-								"LOINC" -> "LOINC", 
-								"CVX" -> "CVX", 
-								"RxNorm" -> "RXNORM", 
-								"HL7" -> "HL7V3.0", 
-								"ICD-9-CM" -> "ICD9CM", 
-								"HCPCS" -> "HCPCS")
-						
-    val measures: Seq[Int] = ushikService.getAllMeaningfulUseMeasures(getSession()).
-      getListItems().
-      foldLeft(Seq[Int]())(
-        (list, measure) => {
-          list ++ List(measure.getItemKey())
-        })
- 
-   // val measures = List(145236000)
-    val cache = measures.foldLeft(Map[String, Seq[Map[String, String]]]())(
-      (map, measureId: Int) => {
-
-        var tempMap = Map()
-
-        map ++ ushikService.getMeasure(getSession(), measureId).getQualityDataElements().foldLeft(Map[String, Seq[Map[String, String]]]())(
-          (innerMap, qde) => {
-            var codes = MutableList[Map[String, String]]()
-
-            qde.getCodeList().getCodes().foreach((code) => 
-              {
-                val fn = codeLookupFuctnions.get(code.getTaxonomy())  
-                val sab = sabs.get(code.getTaxonomy())
-                
-                if(fn.isDefined && sab.isDefined){
-                	codes += Map(
-                	  "code" -> code.getValue(), 
-	                  "codesystem" -> code.getTaxonomy(),
-	                  "designation" -> fn.get(code.getValue(), sab.get)
-	              )
-                } else {
-                  println("Problem for: " + code.getTaxonomy())
-                }
-              }
-            )
-
-            println("Finished: " + qde.getQDSId())
-            innerMap ++ Map(qde.getQDSId() -> codes)
-          })
-      })
-
-    cache.foreach((x) => println("Key: " + x._1 + " Size: " + x._2.size()))
-    println("Writing Cache")
-
-    implicit val formats = DefaultFormats
-
-    val jsonCache = net.liftweb.json.Serialization.write(cache)
-
-    FileUtils.writeStringToFile(new File("json.out"), jsonCache)
-
-  }
 
   def resolveDefinition(
     id: ValueSetDefinitionReadId,
@@ -144,25 +68,23 @@ class UshikValueSetDefinitionResolutionService extends AbstractService with Valu
     page: Page): ResolvedValueSetResult[EntitySynopsis] = {
 
     val valueSetId = id.getName()
-    
-    val codeMap = valueSets.get(valueSetId).getOrElse( return null );
+
+    val codeMap = ushikDao.valueSets.get(valueSetId).getOrElse(return null);
 
     val codes = codeMap.foldLeft(List[EntitySynopsis]())(
       (list, map) => {
+        val sab = ushikDao.sabs.get(map.get("codesystem").get).get
+        val code = map.get("code").get
         val synopsis = new EntitySynopsis()
-        synopsis.setName(map.get("code").get)
-        synopsis.setNamespace(map.get("codesystem").get)
-        synopsis.setUri("http://some/uri")
+        synopsis.setName(code)
+        synopsis.setNamespace(sab)
+        synopsis.setUri(namespaceResolutionService.prefixToUri(sab) + code)
         synopsis.setDesignation(map.getOrElse("designation", null))
 
         list ++ List(synopsis)
       })
 
     new ResolvedValueSetResult[EntitySynopsis](buildHeader(), codes, true)
-  }
-
-  private def getSession(): String = {
-    ushikService.authenticateSession("", "")
   }
 
   private def buildHeader(): ResolvedValueSetHeader = {
@@ -194,21 +116,4 @@ class UshikValueSetDefinitionResolutionService extends AbstractService with Valu
 class VsCode(_code: String, _codeSystem: String) {
   val code: String = _code
   val codeSystem: String = _codeSystem
-}
-
-object Test {
-  def main(args: Array[String]) {
-    val svc = new UshikValueSetDefinitionResolutionService()
-    
- var s = scala.collection.Set[String]()
- 
-    svc.valueSets.foreach( (x) => x._2.foreach( (y) => {
-       s += y.get("codesystem").get 
-    
-    }
-    ))
-    
-    
-    println(s)
-  }
 }

@@ -38,6 +38,10 @@
 		<property name="user" value="sa" />
 		<property name="password" value="" />
 	</bean>
+	
+	<bean id="namespaceResolutionService" class="edu.mayo.cts2.framework.plugin.service.nlm.namespace.NamespaceResolutionService">
+		<property name="namespaceServiceUrl" value="http://informatics.mayo.edu/cts2/services/bioportal-rdf" />
+	</bean>
 
 	<bean
 		class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">

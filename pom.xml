@@ -363,6 +363,12 @@
 		</dependency>
 
 		<dependency>
+			<groupId>com.codahale</groupId>
+			<artifactId>jerkson_2.9.1</artifactId>
+			<version>0.5.0</version>
+		</dependency>
+
+		<dependency>
 			<groupId>fr.pilato.spring</groupId>
 			<artifactId>spring-elasticsearch</artifactId>
 			<version>0.0.2</version>
@@ -488,6 +494,11 @@
 			<id>sonatype</id>
 			<url>http://oss.sonatype.org/content/repositories/releases/</url>
 			<name>Sonatype Releases</name>
+		</repository>
+
+		<repository>
+			<id>repo.codahale.com</id>
+			<url>http://repo.codahale.com</url>
 		</repository>
 	</repositories>
 

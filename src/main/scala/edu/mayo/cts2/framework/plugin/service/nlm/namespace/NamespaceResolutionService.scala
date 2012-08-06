@@ -6,7 +6,7 @@ import clojure.lang.RT
 import edu.mayo.cts2.framework.plugin.service.nlm.umls.UmlsService
 import javax.annotation.Resource
 
-@Component
+@Component("namespaceResolutionService")
 class NamespaceResolutionService {
 
   RT.loadResourceScript("cts2/ns/NamespaceService.clj");
