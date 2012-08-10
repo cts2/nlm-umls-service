@@ -43,6 +43,8 @@ class UshikDao {
 
   def cacheValueSets() = {
     val measures: Seq[Int] = getAllMeasureIds()
+    
+    
  
     val valueSets = measures.foldLeft(Map[String, QualityDataElement]())(
       (map, measureId: Int) => {

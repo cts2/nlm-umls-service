@@ -17,7 +17,6 @@ import edu.mayo.cts2.framework.model.directory.DirectoryResult
 import edu.mayo.cts2.framework.model.valueset.{ValueSetCatalogEntrySummary, ValueSetCatalogEntry}
 import edu.mayo.cts2.framework.model.core.{PropertyReference, PredicateReference, SortCriteria, MatchAlgorithmReference}
 import gov.cdc.vocab.service.dto.input.CodeSystemSearchCriteriaDto
-import edu.mayo.cts2.framework.plugin.service.nlm.phinvads.dao.PhinVadsDao
 
 @Component
 class UshikValueSetQueryService

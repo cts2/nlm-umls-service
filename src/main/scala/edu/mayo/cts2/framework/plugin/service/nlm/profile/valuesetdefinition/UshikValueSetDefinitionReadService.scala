@@ -1,21 +1,18 @@
 package edu.mayo.cts2.framework.plugin.service.nlm.profile.valuesetdefinition
 
 import java.lang.Override
+
 import scala.collection.JavaConversions._
+
 import org.springframework.stereotype.Component
-import edu.mayo.cts2.framework.model.codesystemversion.CodeSystemVersionCatalogEntry
+
 import edu.mayo.cts2.framework.model.command.ResolvedReadContext
 import edu.mayo.cts2.framework.model.core.VersionTagReference
+import edu.mayo.cts2.framework.model.extension.LocalIdValueSetDefinition
 import edu.mayo.cts2.framework.model.service.core.NameOrURI
 import edu.mayo.cts2.framework.plugin.service.nlm.profile.AbstractService
-import edu.mayo.cts2.framework.service.profile.codesystemversion.CodeSystemVersionReadService
 import edu.mayo.cts2.framework.service.profile.valuesetdefinition.ValueSetDefinitionReadService
-import edu.mayo.cts2.framework.model.extension.LocalIdValueSetDefinition
-import edu.mayo.cts2.framework.model.valuesetdefinition.ValueSetDefinition
 import edu.mayo.cts2.framework.service.profile.valuesetdefinition.name.ValueSetDefinitionReadId
-import edu.mayo.cts2.framework.plugin.service.nlm.phinvads.dao.PhinVadsDao
-import javax.annotation.Resource
-import gov.cdc.vocab.service.dto.input.ValueSetVersionSearchCriteriaDto
 
 @Component
 class UshikValueSetDefinitionReadService extends AbstractService with ValueSetDefinitionReadService {
